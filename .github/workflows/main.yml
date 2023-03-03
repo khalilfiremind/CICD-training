@@ -12,7 +12,7 @@ jobs:
     secrets: inherit
 
   apply:
-    if: ${{}}
+    if: ${{ contains(fromJson('["production", "staging", "development"]'), github.head_ref || github.ref_name) }}
     needs: [ plan ]
     uses: /.github/workflows/terraform.yml
     with:
