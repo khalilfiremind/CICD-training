@@ -5,7 +5,7 @@ on:
 jobs:
   plan:
     if: ${{ github.head_ref == '' }}
-    uses: ./.github/workflows/terraform-command.yml
+    uses: ./.github/workflows/terraform.yml
     with:
       command: 'plan'
     secrets: inherit
