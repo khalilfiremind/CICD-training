@@ -36,6 +36,7 @@ jobs:
 
     permissions:
       id-token: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -44,7 +45,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
-          role-to-assume: ${{ secrets.ACTION_IAM_ROLE }}
+          role-to-assume: arn:aws:iam::651762338902:role/GithubActionsKhalilDeploy
           role-session-name: GithubActionsKhalilDeploy
           aws-region: ${{ env.TF_VAR_AWS_REGION }}
 
