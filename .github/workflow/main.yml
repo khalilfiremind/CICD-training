@@ -6,7 +6,7 @@ on:
 jobs:
   plan:
     if: ${{ githubaction.head_ref == '' }}
-    uses: ./.github/workflows/terraform.yml
+    uses: ./.github/workflow/terraform.yml
     with:
       command: "plan"
     secrets: inherit
@@ -14,7 +14,7 @@ jobs:
   apply:
     if: ${{ contains(fromJson('["production", "staging", "development"]'), github.head_ref || github.ref_name) }}
     needs: [ plan ]
-    uses: /.github/workflows/terraform.yml
+    uses: /.github/workflow/terraform.yml
     with:
       command: "apply -auto-approve"
     secrets: inherit
