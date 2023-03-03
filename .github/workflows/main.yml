@@ -1,0 +1,20 @@
+name: "Main"
+
+on:
+  push
+
+jobs:
+  plan:
+    if: ${{ githubaction.head_ref == '' }}
+    uses: ./.github/workflows/terraform.yml
+    with:
+      command: "plan"
+    secrets: inherit
+
+  apply:
+    if: ${{}}
+    needs: [ plan ]
+    uses: /.github/workflows/terraform.yml
+    with:
+      command: "apply -auto-approve"
+    secrets: inherit
