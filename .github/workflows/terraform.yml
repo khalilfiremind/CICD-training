@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TF_VAR_SERVICE: algocyte
+      TF_VAR_SERVICE: CICD
       TF_VAR_BUILD_STAGE: ${{ github.head_ref || github.ref_name }}
       TF_VAR_AWS_REGION: ${{ secrets.AWS_REGION }}
       TF_VAR_STATE_BUCKET: ${{ secrets.S3_TERRAFORM_STATE_BUCKET }}
@@ -35,7 +35,7 @@ jobs:
       S3_TERRAFORM_STATE_REGION: ${{ secrets.S3_TERRAFORM_STATE_REGION }}
 
     permissions:
-      id-token: none
+      id-token: write
       contents: read
 
     steps:
