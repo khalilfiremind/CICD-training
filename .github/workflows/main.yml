@@ -1,0 +1,19 @@
+name: 'Main'
+on:
+  push
+
+jobs:
+  plan:
+    if: ${{ github.head_ref == '' }}
+    uses: ./.github/workflows/terraform-command.yml
+    with:
+      command: 'plan'
+    secrets: inherit
+
+  apply:
+    if: ${{ contains(fromJson('["production", "staging", "development"]'), github.head_ref || github.ref_name) }}
+    needs: [ plan ]
+    uses: ./.github/workflows/terraform.yml
+    with:
+      command: 'apply -auto-approve'
+    secrets: inherit

@@ -1,4 +1,4 @@
-name: terraform-workflow
+name: terraform-command-workflow
 
 on:
   workflow_call:
@@ -41,15 +41,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-         uses: ./.github/actions/local-action #path/to/action
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: ${{ secrets.ACTION_IAM_ROLE }}
           role-session-name: GithubActionsKhalilDeploy
-          aws-region:  ${{ secrets.ACTION_IAM_ROLE }}
-        
+          aws-region: ${{ env.TF_VAR_AWS_REGION }}
+
       - name: Set enviroment variables for non PR
         run: |
           echo "${{ env.TF_VAR_BUILD_STAGE }}"
@@ -60,18 +59,15 @@ jobs:
             echo "TF_VAR_CONFIG_FILE_LOCATION=config/config.development.json" >> $GITHUB_ENV
             echo "S3_TERRAFORM_STATE_KEY=${{ secrets.AWS_REGION }}/${{ github.event.repository.name }}/development" >> $GITHUB_ENV
           fi
-
       - name: tfsec
         if: ${{ inputs.command == 'plan' }}
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
           soft_fail: true
 
-      
       - name: Downcase key
         run: |
           echo "S3_TERRAFORM_STATE_KEY=${S3_TERRAFORM_STATE_KEY,,}" >>${GITHUB_ENV}
-
       - name: Creating state bucket
         run: S3_TERRAFORM_STATE_BUCKET=${{ secrets.S3_TERRAFORM_STATE_BUCKET }} S3_TERRAFORM_STATE_REGION=${{ secrets.S3_TERRAFORM_STATE_REGION }} bash setup-scripts/create-bucket.sh
 
