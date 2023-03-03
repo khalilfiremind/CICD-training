@@ -35,7 +35,7 @@ jobs:
       S3_TERRAFORM_STATE_REGION: ${{ secrets.S3_TERRAFORM_STATE_REGION }}
 
     permissions:
-      id-token: write
+      id-token: none
       contents: read
 
     steps:
